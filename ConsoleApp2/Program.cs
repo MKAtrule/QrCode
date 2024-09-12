@@ -1,8 +1,6 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Printing;
-using System.IO;
 using QRCoder;
 
 class Program
@@ -12,12 +10,9 @@ class Program
         Console.WriteLine("Enter the text for the QR code:");
         string inputText = Console.ReadLine();
 
-        var qrCodeModel = new QRCodeModel
-        {
-            Text = inputText
-        };
+     
 
-        HandleData(qrCodeModel);
+        HandleData(inputText);
 
         Console.WriteLine("QR code generated and saved as 'QRCode.png'.");
 
@@ -42,10 +37,10 @@ class Program
         PrintQRCode("QRCode.png", selectedPrinter);
     }
 
-    static void HandleData(QRCodeModel model)
+    static void HandleData(string model)
     {
         QRCodeGenerator qrGenerator = new QRCodeGenerator();
-        QRCodeData qrCodeData = qrGenerator.CreateQrCode(model.Text, QRCodeGenerator.ECCLevel.L);
+        QRCodeData qrCodeData = qrGenerator.CreateQrCode(model, QRCodeGenerator.ECCLevel.L);
         QRCode qrCode = new QRCode(qrCodeData);
         var qrCodeAsBitmap = qrCode.GetGraphic(20);
 
@@ -59,7 +54,7 @@ class Program
     }
 
     static void PrintQRCode(string filePath, string printerName)
-    {
+    {  
         PrintDocument printDoc = new PrintDocument
         {
             PrinterSettings = new PrinterSettings
@@ -77,7 +72,7 @@ class Program
                 Rectangle destRect = new Rectangle(
                     e.MarginBounds.Left,
                     e.MarginBounds.Top,
-                    size,
+                     size,
                     size);
 
                 e.Graphics.DrawImage(bitmap, destRect);
@@ -89,7 +84,7 @@ class Program
         try
         {
             printDoc.Print();
-            Console.WriteLine("Printing started...");
+            Console.WriteLine("Printing starteid...");
         }
         catch (Exception ex)
         {
@@ -98,8 +93,3 @@ class Program
     }
 }
 
-public class QRCodeModel
-{
-    public string Text { get; set; }
-    public string QRImageURL { get; set; }
-}
